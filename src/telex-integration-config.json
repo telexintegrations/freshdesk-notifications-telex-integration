@@ -1,0 +1,44 @@
+{
+    "data": {
+      "date": {
+        "created_at": "2025-02-20",
+        "updated_at": "2025-02-20"
+      },
+      "descriptions": {
+        "app_description": "Get ticket created on freshdesk at interval.",
+        "app_logo": "https://res.cloudinary.com/dsd1js7zf/image/upload/v1740050519/freshdesk_dxi7se.png",
+        "app_name": "Freshdesk Notifications.",
+        "app_url": "https://sample-freshdesk-telex-integration.onrender.com",
+        "background_color": "#HEXCODE"
+      },
+      "integration_category": "Monitoring & Logging",
+      "integration_type": "interval",
+      "is_active": true,
+      "author": "Amyy",
+      "key_features": [
+        "Fetches notification for tickets created on freshdesk at intervals"
+      ],
+      "settings": [
+        {
+          "label": "API Key",
+          "type": "text",
+          "required": true,
+          "default": "1234567890"
+        },
+        {
+          "label": "Freshdesk Domain",
+          "type": "text",
+          "required": true,
+          "default": "your-domain.freshdesk.com"
+        },
+        {
+          "label": "interval",
+          "type": "text",
+          "required": true,
+          "default": "* * * * *"
+        }
+      ],
+      "tick_url": "https://sample-freshdesk-telex-integration.onrender.com/tick",
+      "target_url": ""
+    }
+  }
