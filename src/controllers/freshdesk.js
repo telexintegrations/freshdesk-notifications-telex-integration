@@ -1,5 +1,5 @@
 const integration_data = require("../telex-integration-config.json");
-const { getPriorityLabel } = require("../utils/ticket-priority-label");
+const { getPriorityLabel, formatDate } = require("../utils/ticket-priority-label");
 const {
   getLastSentTicketId,
   updateLastSentTicketId,
@@ -62,12 +62,13 @@ const monitorFreshdesk = async (req, res) => {
   }
 
   const priorityLabel = getPriorityLabel(latestTicket.priority);
-  const created_at = new Date(latestTicket.created_at).toISOString().split(".")[0].replace("T", " ").slice(0, 16);
+  const created_at = new Date(latestTicket.created_at)
+
   const ticketMessage =
     `ID: ${latestTicket.id}\n` +
     `Subject: ${latestTicket.subject}\n` +
     `Priority: ${priorityLabel}\n` +
-    `Created At: ${created_at}`;
+    `Created At: ${formatDate(created_at)}`;
 
   console.log("Ticket message:", ticketMessage);
   const telexFormat = {
