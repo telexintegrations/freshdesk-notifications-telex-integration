@@ -16,7 +16,9 @@
       "is_active": true,
       "author": "Amyy",
       "key_features": [
-        "Fetches notification for tickets created on freshdesk at intervals"
+        "Fetches notification for tickets created on freshdesk at intervals",
+        "This Integration requries your freshdesk domain and API key",
+        "Add this url (https://freshdesk-notifications-telex-integration.onrender.com/tick) to your freshdesk webhook to start receving notifications! "
       ],
       "settings": [
         {
