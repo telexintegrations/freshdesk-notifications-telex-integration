@@ -62,14 +62,14 @@ const monitorFreshdesk = async (req, res) => {
   }
 
   const priorityLabel = getPriorityLabel(latestTicket.priority);
-  const created_at = latestTicket.created_at.toISOString().split(".")[0].replace("T", " ").slice(0, 16);
+  const created_at = new Date(latestTicket.created_at).toISOString().split(".")[0].replace("T", " ").slice(0, 16);
   const ticketMessage =
     `ID: ${latestTicket.id}\n` +
     `Subject: ${latestTicket.subject}\n` +
     `Priority: ${priorityLabel}\n` +
     `Created At: ${created_at}`;
 
-console.log("Ticket message:", ticketMessage)
+  console.log("Ticket message:", ticketMessage);
   const telexFormat = {
     message: ticketMessage,
     username: "Freshdesk Bot",
