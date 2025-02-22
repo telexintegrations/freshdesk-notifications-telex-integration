@@ -74,7 +74,7 @@ const monitorFreshdesk = async (req, res) => {
   const telexFormat = {
     message: ticketMessage,
     username: "Freshdesk Bot",
-    event_name: "New Ticket Alert",
+    event_name: "New Ticket",
     status: "success",
   };
 

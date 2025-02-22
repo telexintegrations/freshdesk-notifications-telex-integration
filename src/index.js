@@ -9,7 +9,7 @@ app.use(cors());
 const port = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
-  return res.json("hello world");
+  return res.json("Freshdesk Telex Integration");
 });
 app.use(freshdeskRoute);
 
