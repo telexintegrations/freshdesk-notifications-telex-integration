@@ -8,7 +8,7 @@
         "app_description": "Get ticket created on freshdesk at interval.",
         "app_logo": "https://res.cloudinary.com/dsd1js7zf/image/upload/v1740050519/freshdesk_dxi7se.png",
         "app_name": "Freshdesk Notifications.",
-        "app_url": "https://sample-freshdesk-telex-integration.onrender.com",
+        "app_url": "https://www.freshworks.com/freshdesk/helpdesk-system/?tactic_id=4981402&utm_source=google-adwords&utm_medium=FD-Search-Brand-Core-MEA&utm_campaign=FD-Search-Brand-Core-MEA&utm_term=freshdesk&device=c&matchtype=e&network=g&gclid=CjwKCAiAiOa9BhBqEiwABCdG87YjwS9kzSWwdVue2oa68zdnXNPab9JTTewrl2znttBb2qgmgUYh4BoCulQQAvD_BwE&audience=aud-957007691914:kwd-30002131023&ad_id=572454179478&gad_source=1",
         "background_color": "#HEXCODE"
       },
       "integration_category": "Monitoring & Logging",
@@ -38,7 +38,7 @@
           "default": "* * * * *"
         }
       ],
-      "tick_url": "https://sample-freshdesk-telex-integration.onrender.com/tick",
+      "tick_url": "https://freshdesk-notifications-telex-integration.onrender.com/tick",
       "target_url": ""
     }
   }
