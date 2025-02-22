@@ -7,7 +7,7 @@
       "descriptions": {
         "app_description": "Get ticket created on freshdesk at interval.",
         "app_logo": "https://res.cloudinary.com/dsd1js7zf/image/upload/v1740050519/freshdesk_dxi7se.png",
-        "app_name": "Freshdesk Notifications.",
+        "app_name": "Freshdesk Notifications",
         "app_url": " https://freshdesk-notifications-telex-integration.onrender.com",
         "background_color": "#HEXCODE"
       },
