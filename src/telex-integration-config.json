@@ -18,20 +18,21 @@
       "key_features": [
         "Fetches notification for tickets created on freshdesk at intervals",
         "This Integration requries your freshdesk domain and API key",
-        "Add this url (https://freshdesk-notifications-telex-integration.onrender.com/tick) to your freshdesk webhook to start receving notifications! "
+        "Add this url (https://freshdesk-notifications-telex-integration.onrender.com/tick) to your freshdesk webhook to start receving notifications! ",
+        "To test send a test email to support@nwabueze2amarachi.freshdesk.com or visit https://nwabueze2amarachi.freshdesk.com/support/tickets/new to create a new ticket and get notified in telex"
       ],
       "settings": [
         {
           "label": "API Key",
           "type": "text",
           "required": true,
-          "default": "1234567890"
+          "default": ""
         },
         {
           "label": "Freshdesk Domain",
           "type": "text",
           "required": true,
-          "default": "your-domain.freshdesk.com"
+          "default": ""
         },
         {
           "label": "interval",

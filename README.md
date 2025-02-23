@@ -30,6 +30,8 @@ To run this locally, ensure you have the following installed: <br>
 3. Create a .env file and specify a port
    ```sh
      PORT = 5000
+     API_KEY = 123456789
+     FRESHDESH_DOMAIN = your-domain.com
    ```
 4. Start the server
    ```sh
@@ -59,6 +61,12 @@ To run this locally, ensure you have the following installed: <br>
 ## Integration Settings
 - `API key` - your company's freshdesk api key
 - `Freshdesk Domain` - your company freshdesk domain
+
+## How to test this integration
+If you do not have a freshdesk account a default freshdesk api key and domain name has been added during deployment on render
+- leave api key and freshdesk domain empty
+- set an interval at default its 1min
+- To get notified create a ticket on [Freshdesk](https://nwabueze2amarachi.freshdesk.com/support/tickets/new) and get notified on telex
 
 ## screenshot of the freshdesk integration in a telex channel
 ![Screenshot of Telex chaneel](/Screenshot.png)

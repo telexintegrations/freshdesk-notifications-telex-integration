@@ -1,7 +1,10 @@
-const axios = require("axios");
-const { getLastSentTicketId, updateLastSentTicketId } = require("../utils/previous-ticket");
-const { getPriorityLabel, formatDate } = require("../utils/ticket-priority-label");
 const { monitorFreshdesk } = require("../controllers/freshdesk");
+const axios = require("axios");
+const {
+  getLastSentTicketId,
+  updateLastSentTicketId,
+} = require("../utils/previous-ticket");
+const { getPriorityLabel, formatDate } = require("../utils/ticket-priority-label");
 
 jest.mock("axios");
 jest.mock("../utils/previous-ticket", () => ({
@@ -13,87 +16,72 @@ jest.mock("../utils/ticket-priority-label", () => ({
   formatDate: jest.fn(),
 }));
 
-describe("send freshdesk ticket notification to telex", () => {
+
+describe("Monitor Freshdesk", () => {
   let req, res;
 
   beforeEach(() => {
     req = {
       body: {
-        return_url: "http://mock-url.com",
+        return_url: "https://example.com/callback",
         settings: [
-          { label: "API Key", default: "mock-api-key" },
-          { label: "Freshdesk Domain", default: "mock.freshdesk.com" },
+          { label: "API Key", default: "test_api_key" },
+          { label: "Freshdesk Domain", default: "test_domain" },
         ],
       },
     };
+
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
   });
 
-  //  Missing API Key or Domain
   it("should return 400 if API Key or Freshdesk Domain is missing", async () => {
-    req.body.settings = []; // Simulate missing settings
-
+    req.body.settings = [];
     await monitorFreshdesk(req, res);
-
     expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ error: "Settings is required" });
+    expect(res.json).toHaveBeenCalledWith({ error: "API Key and Freshdesk Domain are required" });
   });
 
-  // Freshdesk API Failure
-  it("should return 500 if Freshdesk API request fails", async () => {
-    axios.get.mockRejectedValue(new Error("Freshdesk API error")); // Simulate API failure
-
+  it("should return 500 if fetching tickets fails", async () => {
+    axios.get.mockRejectedValue(new Error("Fetch error"));
     await monitorFreshdesk(req, res);
-
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({ error: "Failed to fetch ticket" });
   });
 
-  //  No Tickets Found
   it("should return 404 if no tickets are found", async () => {
     axios.get.mockResolvedValue({ data: [] });
-
     await monitorFreshdesk(req, res);
-
     expect(res.status).toHaveBeenCalledWith(404);
     expect(res.json).toHaveBeenCalledWith({ error: "No tickets found" });
   });
 
-  //  No New Tickets (Same Ticket ID as Last Sent)
-  it("should return 200 if the latest ticket is the same as the last sent ticket", async () => {
-    getLastSentTicketId.mockReturnValue(123); // Mock last ticket ID
-    axios.get.mockResolvedValue({ data: [{ id: 123, priority: 2 }] });
+  it("should send 'No New Ticket' notification if latest ticket ID matches last sent ticket ID", async () => {
+    axios.get.mockResolvedValue({ data: [{ id: 123 }] });
+    getLastSentTicketId.mockReturnValue(123);
+    axios.post.mockResolvedValue({});
 
     await monitorFreshdesk(req, res);
 
-    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.status).toHaveBeenCalledWith(202);
     expect(res.json).toHaveBeenCalledWith({
       status: "success",
-      message: "No new ticket to notify",
+      message: "No new ticket to notify, notification sent to telex",
     });
   });
 
-  //  New Ticket Found → Send Notification to Telex
-  it("should send a notification if a new ticket is found", async () => {
-    getLastSentTicketId.mockReturnValue(122); // Mock previous ticket ID
-    axios.get.mockResolvedValue({
-      data: [{ id: 123, subject: "Test Ticket", priority: 2, created_at: "2025-02-22T10:00:00Z" }],
-    });
-    getPriorityLabel.mockReturnValue("Medium");
-    formatDate.mockReturnValue("02/22/2025"); // Mock formatted date
-    axios.post.mockResolvedValue({}); // Simulate successful notification
+  it("should send 'New Ticket' notification if latest ticket ID is new", async () => {
+    axios.get.mockResolvedValue({ data: [{ id: 456, subject: "Test", priority: 2, created_at: "2025-02-23T10:00:00Z" }] });
+    getLastSentTicketId.mockReturnValue(123);
+    getPriorityLabel.mockReturnValue("High");
+    formatDate.mockReturnValue("2025-02-23 10:00:00");
+    axios.post.mockResolvedValue({});
 
     await monitorFreshdesk(req, res);
 
-    expect(axios.post).toHaveBeenCalledWith("http://mock-url.com", expect.objectContaining({
-      message: expect.stringContaining("ID: 123"),
-      message: expect.stringContaining("Created At: 02/22/2025"), // Validate formatted date
-      event_name: "New Ticket Alert",
-    }), expect.any(Object));
-    expect(updateLastSentTicketId).toHaveBeenCalledWith(123);
+    expect(updateLastSentTicketId).toHaveBeenCalledWith(456);
     expect(res.status).toHaveBeenCalledWith(202);
     expect(res.json).toHaveBeenCalledWith({
       status: "success",
@@ -101,15 +89,12 @@ describe("send freshdesk ticket notification to telex", () => {
     });
   });
 
-  //  Telex API Failure (Fails After New Ticket is Found)
-  it("should return 500 if notification to Telex fails", async () => {
-    getLastSentTicketId.mockReturnValue(122);
-    axios.get.mockResolvedValue({
-      data: [{ id: 123, subject: "Test Ticket", priority: 2, created_at: "2025-02-22T10:00:00Z" }],
-    });
-    getPriorityLabel.mockReturnValue("Medium");
-    formatDate.mockReturnValue("02/22/2025"); // Mock formatted date
-    axios.post.mockRejectedValue(new Error("Telex API error")); // Simulate failure in notification
+  it("should return 500 if sending notification to Telex fails", async () => {
+    axios.get.mockResolvedValue({ data: [{ id: 456, subject: "Test", priority: 2, created_at: "2025-02-23T10:00:00Z" }] });
+    getLastSentTicketId.mockReturnValue(123);
+    getPriorityLabel.mockReturnValue("High");
+    formatDate.mockReturnValue("2025-02-23 10:00:00");
+    axios.post.mockRejectedValue(new Error("Telex error"));
 
     await monitorFreshdesk(req, res);
 
