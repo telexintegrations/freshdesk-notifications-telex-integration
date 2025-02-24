@@ -26,13 +26,13 @@
           "label": "API Key",
           "type": "text",
           "required": true,
-          "default": ""
+          "default": "Aiq8WW8iNQjoVv0ayA"
         },
         {
           "label": "Freshdesk Domain",
           "type": "text",
           "required": true,
-          "default": ""
+          "default": "nwabueze2amarachi.freshdesk.com"
         },
         {
           "label": "interval",
