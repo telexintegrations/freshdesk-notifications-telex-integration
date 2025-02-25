@@ -8,12 +8,6 @@ const axios = require("axios");
 const default_api_key = process.env.API_KEY;
 const default_freshdesk_domain = process.env.FRESHDESK_DOMAIN;
 
-// Constants
-const NO_NEW_TICKET_MESSAGE = "No new ticket to notify";
-const NEW_TICKET_EVENT_NAME = "New Ticket";
-const NO_NEW_TICKET_EVENT_NAME = "No New Ticket";
-const SUCCESS_STATUS = "success";
-const CONTENT_TYPE_JSON = { "Content-Type": "application/json" };
 
 // Integration spec file
 const integration = (req, res) => {
